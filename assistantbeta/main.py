@@ -1,13 +1,16 @@
-from openai import OpenAI
 import os
 import time
+
+from openai import OpenAI
+
+from models import Assistant, Thread, Message
 
 # Initialize OpenAI client with API key
 openai_api_key = os.getenv("OPENAI_API_KEY")
 client = OpenAI()
 
 # Create an Assistant
-assistant = client.beta.assistants.create(
+assistant: Assistant = client.beta.assistants.create(
     name="Math Tutor",
     instructions="You are a personal math tutor. Write and run code to answer math questions.",
     tools=[{"type": "code_interpreter"}],
@@ -15,10 +18,10 @@ assistant = client.beta.assistants.create(
 )
 
 # Create a Thread
-thread = client.beta.threads.create()
+thread: Thread = client.beta.threads.create()
 
 # Add a Message to the Thread
-message = client.beta.threads.messages.create(
+message: Message = client.beta.threads.messages.create(
     thread_id=thread.id,
     role="user",
     content="I need to solve the equation `3x + 11 = 14`. Can you help me?",
